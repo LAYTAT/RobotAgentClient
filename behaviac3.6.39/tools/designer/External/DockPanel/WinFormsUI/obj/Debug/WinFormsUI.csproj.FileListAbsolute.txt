@@ -1,0 +1,9 @@
+E:\robotclient\behaviac3.6.39\tools\designer\External\DockPanel\WinFormsUI\bin\Debug\WeifenLuo.WinFormsUI.Docking.dll
+E:\robotclient\behaviac3.6.39\tools\designer\External\DockPanel\WinFormsUI\bin\Debug\WeifenLuo.WinFormsUI.Docking.pdb
+E:\robotclient\behaviac3.6.39\tools\designer\External\DockPanel\WinFormsUI\obj\Debug\WinFormsUI.csprojAssemblyReference.cache
+E:\robotclient\behaviac3.6.39\tools\designer\External\DockPanel\WinFormsUI\obj\Debug\WeifenLuo.WinFormsUI.Docking.Resources.resources
+E:\robotclient\behaviac3.6.39\tools\designer\External\DockPanel\WinFormsUI\obj\Debug\WeifenLuo.WinFormsUI.Docking.Strings.resources
+E:\robotclient\behaviac3.6.39\tools\designer\External\DockPanel\WinFormsUI\obj\Debug\WinFormsUI.csproj.GenerateResource.cache
+E:\robotclient\behaviac3.6.39\tools\designer\External\DockPanel\WinFormsUI\obj\Debug\WinFormsUI.csproj.CoreCompileInputs.cache
+E:\robotclient\behaviac3.6.39\tools\designer\External\DockPanel\WinFormsUI\obj\Debug\WeifenLuo.WinFormsUI.Docking.dll
+E:\robotclient\behaviac3.6.39\tools\designer\External\DockPanel\WinFormsUI\obj\Debug\WeifenLuo.WinFormsUI.Docking.pdb

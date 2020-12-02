@@ -1,0 +1,13 @@
+.vs
+CMakeFiles
+Debug
+robotclient.dir
+x64
+*.vcxproj
+*.vcxproj.user
+*.cmake
+*.txt
+*.user
+*.sln
+*.filters
+*.log

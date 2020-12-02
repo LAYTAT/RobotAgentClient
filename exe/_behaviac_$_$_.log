@@ -1,0 +1,21 @@
+[behaviac][00000][thread 37076]CREATED ON 2020-12-01
+
+[behaviac][00000][thread 37076][20:43:04][INFO]behaviac: ConnectorInterface::Init Enter
+[behaviac][00001][thread 37076][20:43:04][INFO]behaviac: listing at port 60636
+[behaviac][00002][thread 37076][20:43:04][INFO]behaviac: ConnectorInterface::Init Connected
+[behaviac][00003][thread 20360][20:43:04][INFO]behaviac: Socket Thread Starting
+[behaviac][00004][thread 20360][20:43:04][INFO]behaviac: Listening at port 60636...
+[behaviac][00005][thread 37076][20:43:05][INFO]behaviac: ConnectorInterface::Init successful
+[behaviac][00006][thread 37076][20:43:05][INFO]behaviac: SetupConnection successful
+[behaviac][00007][thread 37076][20:43:05][INFO]Version: behaviac_vs2015_3.6.39_64_debug_NRELEASE
+[behaviac][00008][thread 37076][20:43:05][INFO]Config::IsDesktopPlatform true
+[behaviac][00009][thread 37076][20:43:05][INFO]Config::IsProfiling false
+[behaviac][00010][thread 37076][20:43:05][INFO]Config::IsLogging false
+[behaviac][00011][thread 37076][20:43:05][INFO]Config::IsLoggingFlush true
+[behaviac][00012][thread 37076][20:43:05][INFO]Config::IsSocketing true
+[behaviac][00013][thread 37076][20:43:05][INFO]Config::IsSocketBlocking false
+[behaviac][00014][thread 37076][20:43:05][INFO]Config::IsHotReload true
+[behaviac][00015][thread 37076][20:43:05][INFO]Config::SocketPort 60636
+[behaviac][00016][thread 37076][20:43:05][INFO]'WorkspaceExportPath' is 'exported/'
+[behaviac][00017][thread 20360][20:43:36][INFO]behaviac: ThreadFunc exited. 
+[behaviac][00018][thread 37076][20:43:36][INFO]behaviac: ShutdownConnection

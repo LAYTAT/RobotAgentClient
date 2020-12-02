@@ -1,0 +1,12 @@
+E:\robotclient\behaviac3.6.39\tools\designer\out\PluginBehaviac.dll.config
+E:\robotclient\behaviac3.6.39\tools\designer\out\PluginBehaviac.dll
+E:\robotclient\behaviac3.6.39\tools\designer\out\PluginBehaviac.pdb
+E:\robotclient\behaviac3.6.39\tools\designer\out\zh-CN\PluginBehaviac.resources.dll
+E:\robotclient\behaviac3.6.39\tools\designer\Plugins\PluginBehaviac\obj\Debug\PluginBehaviac.csprojAssemblyReference.cache
+E:\robotclient\behaviac3.6.39\tools\designer\Plugins\PluginBehaviac\obj\Debug\PluginBehaviac.Properties.Resources.resources
+E:\robotclient\behaviac3.6.39\tools\designer\Plugins\PluginBehaviac\obj\Debug\PluginBehaviac.Properties.Resources.zh-CN.resources
+E:\robotclient\behaviac3.6.39\tools\designer\Plugins\PluginBehaviac\obj\Debug\PluginBehaviac.csproj.GenerateResource.cache
+E:\robotclient\behaviac3.6.39\tools\designer\Plugins\PluginBehaviac\obj\Debug\PluginBehaviac.csproj.CoreCompileInputs.cache
+E:\robotclient\behaviac3.6.39\tools\designer\Plugins\PluginBehaviac\obj\Debug\zh-CN\PluginBehaviac.resources.dll
+E:\robotclient\behaviac3.6.39\tools\designer\Plugins\PluginBehaviac\obj\Debug\PluginBehaviac.dll
+E:\robotclient\behaviac3.6.39\tools\designer\Plugins\PluginBehaviac\obj\Debug\PluginBehaviac.pdb

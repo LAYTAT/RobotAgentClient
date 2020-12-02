@@ -1,0 +1,12 @@
+.vs
+CMakeFiles
+Debug
+libbehaviac.dir
+x64
+*.vcxproj
+*.vcxproj.user
+*.cmake
+*.txt
+*.user
+*.sln
+*.filters
