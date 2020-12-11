@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="Project"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/tmp/tmp.sAyJQxVDv4/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -j4 -f &quot;/tmp/tmp.sAyJQxVDv4/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/gmake -j4 -f &quot;/tmp/tmp.sAyJQxVDv4/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j4 -f &quot;/tmp/tmp.sAyJQxVDv4/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j4 -f &quot;/tmp/tmp.sAyJQxVDv4/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="/tmp/tmp.sAyJQxVDv4/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -j4 -f &quot;/tmp/tmp.sAyJQxVDv4/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/gmake -j4 -f &quot;/tmp/tmp.sAyJQxVDv4/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j4 -f &quot;/tmp/tmp.sAyJQxVDv4/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j4 -f &quot;/tmp/tmp.sAyJQxVDv4/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/tmp/tmp.sAyJQxVDv4/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -j4 -f &quot;/tmp/tmp.sAyJQxVDv4/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/gmake -j4 -f &quot;/tmp/tmp.sAyJQxVDv4/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j4 -f &quot;/tmp/tmp.sAyJQxVDv4/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j4 -f &quot;/tmp/tmp.sAyJQxVDv4/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="robotclient">
+				<Option output="/tmp/tmp.sAyJQxVDv4/exe/robotclient" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="./../exe"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DDEBUG"/>
+					<Add option="-D_DEBUG"/>
+					<Add option="-DASIO_STANDALONE"/>
+					<Add option="-DASIO_HAS_STD_CHRONO"/>
+					<Add option="-DCURL_STATICLIB"/>
+					<Add option="-DFOR_SERVER"/>
+					<Add directory="/tmp/tmp.sAyJQxVDv4/./thirdparty/include"/>
+					<Add directory="/tmp/tmp.sAyJQxVDv4/./include"/>
+					<Add directory="/tmp/tmp.sAyJQxVDv4/./../behaviac3.6.39/exported/behaviac_generated/types"/>
+					<Add directory="/tmp/tmp.sAyJQxVDv4/./thirdparty/include/asio-1.10.8/include"/>
+					<Add directory="/opt/rh/devtoolset-8/root/usr/lib/gcc/x86_64-redhat-linux/8/../../../../include/c++/8"/>
+					<Add directory="/opt/rh/devtoolset-8/root/usr/lib/gcc/x86_64-redhat-linux/8/../../../../include/c++/8/x86_64-redhat-linux"/>
+					<Add directory="/opt/rh/devtoolset-8/root/usr/lib/gcc/x86_64-redhat-linux/8/../../../../include/c++/8/backward"/>
+					<Add directory="/opt/rh/devtoolset-8/root/usr/lib/gcc/x86_64-redhat-linux/8/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/opt/rh/devtoolset-8/root/usr/include"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -j4 -f &quot;/tmp/tmp.sAyJQxVDv4/cmake-build-debug/Makefile&quot;  VERBOSE=1 robotclient"/>
+					<CompileFile command="/usr/bin/gmake -j4 -f &quot;/tmp/tmp.sAyJQxVDv4/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j4 -f &quot;/tmp/tmp.sAyJQxVDv4/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j4 -f &quot;/tmp/tmp.sAyJQxVDv4/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="robotclient/fast">
+				<Option output="/tmp/tmp.sAyJQxVDv4/exe/robotclient" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="./../exe"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DDEBUG"/>
+					<Add option="-D_DEBUG"/>
+					<Add option="-DASIO_STANDALONE"/>
+					<Add option="-DASIO_HAS_STD_CHRONO"/>
+					<Add option="-DCURL_STATICLIB"/>
+					<Add option="-DFOR_SERVER"/>
+					<Add directory="/tmp/tmp.sAyJQxVDv4/./thirdparty/include"/>
+					<Add directory="/tmp/tmp.sAyJQxVDv4/./include"/>
+					<Add directory="/tmp/tmp.sAyJQxVDv4/./../behaviac3.6.39/exported/behaviac_generated/types"/>
+					<Add directory="/tmp/tmp.sAyJQxVDv4/./thirdparty/include/asio-1.10.8/include"/>
+					<Add directory="/opt/rh/devtoolset-8/root/usr/lib/gcc/x86_64-redhat-linux/8/../../../../include/c++/8"/>
+					<Add directory="/opt/rh/devtoolset-8/root/usr/lib/gcc/x86_64-redhat-linux/8/../../../../include/c++/8/x86_64-redhat-linux"/>
+					<Add directory="/opt/rh/devtoolset-8/root/usr/lib/gcc/x86_64-redhat-linux/8/../../../../include/c++/8/backward"/>
+					<Add directory="/opt/rh/devtoolset-8/root/usr/lib/gcc/x86_64-redhat-linux/8/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/opt/rh/devtoolset-8/root/usr/include"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -j4 -f &quot;/tmp/tmp.sAyJQxVDv4/cmake-build-debug/Makefile&quot;  VERBOSE=1 robotclient/fast"/>
+					<CompileFile command="/usr/bin/gmake -j4 -f &quot;/tmp/tmp.sAyJQxVDv4/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j4 -f &quot;/tmp/tmp.sAyJQxVDv4/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j4 -f &quot;/tmp/tmp.sAyJQxVDv4/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/tmp/tmp.sAyJQxVDv4/include/Config.h">
+			<Option target="robotclient"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.sAyJQxVDv4/include/Epoll.h">
+			<Option target="robotclient"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.sAyJQxVDv4/include/MesgHead.h">
+			<Option target="robotclient"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.sAyJQxVDv4/include/SocketServer.h">
+			<Option target="robotclient"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.sAyJQxVDv4/include/baselink.h">
+			<Option target="robotclient"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.sAyJQxVDv4/include/buffer.h">
+			<Option target="robotclient"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.sAyJQxVDv4/include/robot_entity.h">
+			<Option target="robotclient"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.sAyJQxVDv4/src/MainBackup.cpp">
+			<Option target="robotclient"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.sAyJQxVDv4/src/SocketNetwork/Epoll.cpp">
+			<Option target="robotclient"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.sAyJQxVDv4/src/SocketNetwork/MesgHead.cpp">
+			<Option target="robotclient"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.sAyJQxVDv4/src/SocketNetwork/SocketServer.cpp">
+			<Option target="robotclient"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.sAyJQxVDv4/src/SocketNetwork/baselink.cpp">
+			<Option target="robotclient"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.sAyJQxVDv4/src/SocketNetwork/buffer.cpp">
+			<Option target="robotclient"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.sAyJQxVDv4/src/main.cpp">
+			<Option target="robotclient"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.sAyJQxVDv4/src/robot_entity.cpp">
+			<Option target="robotclient"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.sAyJQxVDv4/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>
