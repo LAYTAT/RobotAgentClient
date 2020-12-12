@@ -191,7 +191,7 @@ INT32 baselink::ConnectServer(INT32 port, const char* addr)
 {
     if (m_socketfd < 0)
     {
-        std::cout << "socket fd is wrong!" << std::endl;
+        std::cout << "socket fd is wrong when connectiong with addr, m_socketfd = " << m_socketfd << std::endl;
         return -1;
     }
     std::cout << "m_socketfd:" << m_socketfd << std::endl;

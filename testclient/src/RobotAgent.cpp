@@ -14,9 +14,12 @@ RobotAgent::RobotAgent() {
     // 连接到login server
     login_conn = new baselink();
     gate_conn = new baselink();
-//    if(login_conn->OpenClient(8888) < 0) {
-//        std::cout << "open client failed" << std::endl;
-//    }
+
+    this->Init();
+
+    if(login_conn->OpenClient(9001) == -1) {
+        std::cout << "open client failed" << std::endl;
+    }
 
     // 初始化玩家状态
     character_state = RobotAgentEnum::INIT;

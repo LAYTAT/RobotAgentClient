@@ -6,12 +6,24 @@
 #include <iostream>
 #include "EventSystem.h"
 
+#define NUMER_OF_ROBOTS 100
+
 INSTANCE_SINGLETON(RobotAgentManager);
 
 RobotAgentManager::RobotAgentManager(){
+    INT32 agents_num = NUMER_OF_ROBOTS;
+    if(agents_num <= 0) {
+        std::cout << "Constructing RobotAgentManager failed." << std::endl;
+        return;
+    }
+    socketfd_player = new std::unordered_map<INT32, RobotAgent*>();
+    tcp_map = new std::unordered_map<INT32, baselink*>();
 //    this->m_ListenSock_Login = new baselink();
 //    this->m_ListenSock_Gate = new baselink();
     this->m_msg_head = new MesgHead();
+
+    RobotAgent* robotAgent = new RobotAgent();
+//    m_epoll.EpollAdd()
 }
 RobotAgentManager::~RobotAgentManager(){
 //    delete m_ListenSock_Login;
@@ -46,19 +58,19 @@ void RobotAgentManager::Dojob(){
 /*
  * @目的：新建连接到 server
  * @返回：-1代表失败，0代表成功。*/
-INT32 RobotAgentManager::connectToLoginServer(INT32 client_port, baselink* which_server_connection){
+INT32 RobotAgentManager::connectToLoginServer(baselink* which_server_connection){
 
-    if(which_server_connection->OpenClient(client_port) == -1) {
-        std::cout << "Open client for server failed." << std::endl;
-        return -1;
-    }
+//    if(which_server_connection->OpenClient(client_port) == -1) {
+//        std::cout << "Open client for server failed." << std::endl;
+//        return -1;
+//    }
 
     INT32 login_ret = which_server_connection->ConnectServer(LOGIN_SERVER_PORT,LOGIN_SERVER_IP_ADDR);
     if(login_ret < 0){
         std::cout << "connect to server failed.";
     }
-    m_login_fd = which_server_connection->GetFD();
-    m_epoll.EpollAdd(m_login_fd);
+
+    m_epoll.EpollAdd(which_server_connection->GetFD());
 //    if(m_epoll.EpollAdd(m_login_fd) == -1 ) {
 //        std::cout << "\nEpoll add fd:" << m_login_fd << " failed" << std::endl;
 //        perror("perror:");

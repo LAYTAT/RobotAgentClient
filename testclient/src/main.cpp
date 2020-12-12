@@ -22,8 +22,8 @@ int main()
     CreatSingletons();
 
     RobotAgent* ra = new RobotAgent();
-    ra->Init();
-    RobotAgentManager::Instance()->connectToLoginServer(9001, ra->get_login_conn());
+//    ra->Init();
+    RobotAgentManager::Instance()->connectToLoginServer(ra->get_login_conn());
     ra->agent_login("jack89","123456");
     while(true){
 
