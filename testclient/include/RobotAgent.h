@@ -26,6 +26,9 @@ public:
     RobotAgent();
     virtual ~RobotAgent();
 
+    bool Init();
+    void Uninit();
+
     baselink* get_gate_conn();
     baselink* get_login_conn();
     INT32 agent_login(const char* username, const char* password);
