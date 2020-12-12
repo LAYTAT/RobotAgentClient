@@ -26,22 +26,13 @@ bool baselink::Init(INT32 sock)
     return m_buffer->Init();
 }
 
-//bool baselink::InitDbConnection(INT32 sock)
-//{
-//    m_socketfd_to_db = sock;
-//    if (m_buffer_to_db == nullptr) {
-//        m_buffer_to_db = new buffer();
-//    }
-//    if( m_msghead_to_db == nullptr) {
-//        m_msghead_to_db = new MesgHead();
-//        m_msghead_to_db->Init(0,0,0);
-//    }
-//    return m_buffer_to_db->Init();
-//}
+
 
 void baselink::Uinit()
 {
-    CloseSocket();
+    if(m_socketfd > 0) {
+        CloseSocket();
+    }
     if(m_buffer != nullptr)
     {
         m_buffer->Uinit();
@@ -196,7 +187,7 @@ INT32 baselink::OpenClient(INT32 port)
     return 0;
 }
 
-INT32 baselink::ConnectServer()
+INT32 baselink::ConnectServer(INT32 port, const char* addr)
 {
     if (m_socketfd < 0)
     {
@@ -207,15 +198,16 @@ INT32 baselink::ConnectServer()
     //connect
 	sockaddr_in serveraddr;
 	serveraddr.sin_family = AF_INET;
-	serveraddr.sin_port = htons(LOGIN_SERVER_PORT);
-	serveraddr.sin_addr.s_addr = inet_addr(LOGIN_SERVER_IP_ADDR);
+	serveraddr.sin_port = htons(port);
+	serveraddr.sin_addr.s_addr = inet_addr(addr);
 	if (connect(m_socketfd, (sockaddr*)&serveraddr, sizeof(serveraddr)) < 0)
 	{
-		std::cout << "clien connect failed!" << std::endl;
+		std::cout << "client connect failed! " << std::endl;
+		perror("perrno:");
 		return -1;
 	}
 
-	std::cout << "connect success ~.~" << std::endl;
+	std::cout << "Client connect success." << std::endl;
     return 0;
 }
 
@@ -224,7 +216,7 @@ INT32 baselink::ConnectServer()
 //    std::cout << "connectDBServer" << std::endl;
 //    if (m_socketfd < 0)
 //    {
-//        std::cout << "login server connecting with db server: \n"
+//        std::cout << "login server connecting wi th db server: \n"
 //                     "socket fd is wrong! \n" <<
 //                  "errno:" << errno << ".\n"
 //                  << std::endl;
@@ -355,6 +347,7 @@ void baselink::CloseSocket()
         return ;
     }
     close(m_socketfd);
+    std::cout << "Close client socket success!" << std::endl;
     m_socketfd = -1;
 }
 

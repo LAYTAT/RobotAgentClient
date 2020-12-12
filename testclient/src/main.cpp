@@ -20,7 +20,11 @@ void DestroySingletons(){
 int main()
 {
     CreatSingletons();
-    std::cout << "你好" << std::endl;
+    // RobotAgentManager::Instance()->Dojob();
+    // 连接到login server
+    RobotAgentManager::Instance()->connectToLoginServer(9001);
+    // 连接到gate server
+    RobotAgentManager::Instance()->connectToGateServer(9002);
     DestroySingletons();
     return 1;
 }

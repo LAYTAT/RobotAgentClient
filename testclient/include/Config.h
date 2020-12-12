@@ -52,6 +52,8 @@
 /* ToDo: 改成真正的seesion code */
 #define AUTH_SESSION_CODE 74893217
 
+#define CLIENT_PORT 8888
+
 #define RUNNING_SERVER_ADDR "192.168.49.132"//"10.0.150.52"//
 
 #define DB_SERVER_PORT 8001
