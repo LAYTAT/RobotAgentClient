@@ -6,7 +6,7 @@
 #include <iostream>
 #include "EventSystem.h"
 
-#define NUMER_OF_ROBOTS 100
+#define NUMER_OF_ROBOTS 10
 
 INSTANCE_SINGLETON(RobotAgentManager);
 
@@ -22,12 +22,25 @@ RobotAgentManager::RobotAgentManager(){
 //    this->m_ListenSock_Gate = new baselink();
     this->m_msg_head = new MesgHead();
 
-    RobotAgent* robotAgent = new RobotAgent();
+    RobotAgent* robot_agent_temp = nullptr;
+    for(int i = 0 ; i < agents_num; i++) {
+        robot_agent_temp = new RobotAgent();
+        m_epoll.EpollAdd(robot_agent_temp->get_login_conn()->GetFD());
+        socketfd_player->insert({ robot_agent_temp->get_login_conn()->GetFD(), robot_agent_temp });
+    }
 //    m_epoll.EpollAdd()
 }
 RobotAgentManager::~RobotAgentManager(){
 //    delete m_ListenSock_Login;
 //    delete m_ListenSock_Gate;
+    if (socketfd_player != nullptr) {
+        delete socketfd_player;
+        socketfd_player = nullptr;
+    }
+    if (tcp_map != nullptr) {
+        delete tcp_map;
+        tcp_map = nullptr;
+    }
     delete m_msg_head;
 }
 
@@ -49,10 +62,6 @@ void RobotAgentManager::Uinit(){
     m_msg_head->Uinit();
 //    m_ListenSock_Gate->Uinit();
 //    m_ListenSock_Login->Uinit();
-}
-
-void RobotAgentManager::Dojob(){
-    std::cout << "\nRobotAgentManager is doing job." << std::endl;
 }
 
 /*
@@ -97,3 +106,99 @@ INT32 RobotAgentManager::connectToLoginServer(baselink* which_server_connection)
 //    m_epoll.EpollAdd(m_gate_fd);
 //    return 0;
 //}
+
+[[noreturn]] void RobotAgentManager::Working() {
+    INT32 ready_size = 0;
+    while (true) {
+        ready_size = m_epoll.EpollWait(100);
+        std::unordered_map<INT32, RobotAgent*>* socketfd_player_map = get_socketfd_player();
+        auto fd_player_itr = socketfd_player_map->begin();
+        int len = socketfd_player_map->size();
+        for (int i = 0 ; i < len ; ++i) {
+            //对于初始状态的robot
+            if(fd_player_itr -> second -> get_state() == RobotAgentEnum::INIT){
+                std::string name = std::string("jack"+std::to_string(i+1));
+                std::string pwd = name; // 目前的数据库中id与pwd一致
+                fd_player_itr->second->agent_login(name.c_str(), pwd.c_str());
+            } else if (fd_player_itr -> second ->get_state() == RobotAgentEnum::LOGGED_IN){
+                fd_player_itr -> second ->agent_state_update();
+            }
+            fd_player_itr++;
+        }
+
+//        RobotAgent* temp_player_agent;
+//        for (int i = 0; i < ready_size; i++)
+//        {
+//            struct epoll_event* event = get_epoll()->get_event(i);
+//
+//            if (sockfd_player_map->find(event->data.fd) != sockfd_player_map->end())
+//            {
+//                temp_player_agent = sockfd_player_map->at(event->data.fd);
+//                TCPSocket* soc;
+//                if (temp_player_agent->get_state() == LoginState || temp_player_agent->get_state() == WaitState)
+//                {
+//                    soc = temp_player_agent->get_login_conn();
+//                }
+//                else if (temp_player_agent->get_state() == ActiveState)
+//                {
+//                    soc = temp_player_agent->get_conn();
+//                }
+//                else
+//                {
+//                    std::cout << "state is not correct!" << std::endl;
+//                }
+//
+//                int rec_len;
+//                ProtocalMsg * msg;
+//                int times = 0;
+//                while (true)
+//                {
+//                    rec_len = soc->recv_data();
+//                    SocketBuffer * buff = soc->get_socketbuff();
+//                    std::cout << "return size:" << rec_len << "  readable len: " << buff->get_readable_size() << " start:"
+//                              << buff->get_start() << " end:" << buff->get_end() << std::endl;
+//
+//                    if (buff->get_readable_size() >= sizeof(int32_t) * 3)
+//                    {
+//                        msg = buff->decode();
+//                        if (buff->get_readable_size() >= (sizeof(int32_t) * 3 + msg->payload_size))
+//                        {
+//                            buff->get_msg_payload(msg);
+//                            buff->set_start_by_len((sizeof(int32_t) * 3 + msg->payload_size));
+//                            temp_player_agent->msg_handler(msg);
+//
+//                            if (temp_player_agent->get_login_conn() == soc)
+//                            {
+//                                int32_t fd = soc->get_socket_fd();
+//                                TCPSocket * temp_con = temp_player_agent->get_conn();
+//                                epoll->epoll_add(temp_con->get_socket_fd());
+//                                sockfd_player_map->insert({ temp_con->get_socket_fd(), temp_player_agent});
+//                                epoll->epoll_del(temp_player_agent->get_login_conn()->get_socket_fd());
+//                                temp_player_agent->close_login();
+//                                sockfd_player_map->erase(fd);
+//                            }
+//
+//
+//                            break;
+//                        }
+//                        if (msg != nullptr)
+//                        {
+//                            delete msg;
+//                            msg = nullptr;
+//                        }
+//                    }
+//                    times++;
+//                    if (times > 100)
+//                    {
+//                        std::cout << "Network is bad!" << std::endl;
+//                        break;
+//                    }
+//
+//                }
+//
+//
+//            }
+//        }
+    }
+    return;
+}

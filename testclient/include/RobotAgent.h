@@ -34,7 +34,7 @@ public:
     INT32 agent_login(const char* username, const char* password);
     INT32 agent_state_update();
     INT32 agent_msghandler(MesgHead* msg);
-    INT32 get_character_state();
+    INT32 get_state();
     INT32 close_conn();
 };
 

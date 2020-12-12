@@ -40,6 +40,61 @@ bool RobotAgent::Init(){
     }
 }
 
+//int32_t RobotAgent::msg_handler(ProtocalMsg *msg)
+//{
+//    if (msg == nullptr)
+//    {
+//        std::cout << "msg is null!" << std::endl;
+//        return -1;
+//    }
+//
+//    if (msg->data == nullptr)
+//    {
+//        std::cout << "msg->data is null!" << std::endl;
+//        return -2;
+//    }
+//    std::cout << "msg_ID=" << msg->msg_id << "uid=" << msg->user_id << " len=" << msg->payload_size << std::endl;
+//
+//    if (msg->msg_id == Login)
+//    {
+//        if (state != LoginState)
+//        {
+//            std::cout << "state is not correct! state=" << state << std::endl;
+//            return -2;
+//        }
+//        GameSpec::CtlMsgLoginRsp *login_rsp = new GameSpec::CtlMsgLoginRsp();
+//        login_rsp->ParseFromArray(msg->data, msg->payload_size);
+//        if (login_rsp->errcode() != (int32_t)Error_Socket_OK)
+//        {
+//            std::cout << "msg:error code=" << login_rsp->errcode() << std::endl;
+//            return login_rsp->errcode();
+//        }
+//
+//        conn = new TCPSocket();
+//        conn->open_as_client(1023);
+//        int32_t re_state = conn->connect_to(login_rsp->ip().c_str(), login_rsp->port(), true, 100);
+//        if (re_state == 0)
+//        {
+//            state = ActiveState;
+//        }
+//
+//        if (state == ActiveState)
+//        {
+//            std::cout << "state is active!" << std::endl;
+////			delete login_conn;
+////			login_conn = nullptr;
+//        }
+//        id = msg->user_id;
+//        return re_state;
+//    }
+//    else
+//    {
+//        // ignore other massage
+//        return 0;
+//    }
+//
+//}
+
 void RobotAgent::Uninit(){
     login_conn->Uinit();
     gate_conn->Uinit();
@@ -106,6 +161,9 @@ INT32 RobotAgent::agent_state_update(){
 }
 
 INT32 RobotAgent::agent_login(const char *username, const char *password) {
+
+    RobotAgentManager::Instance()->connectToLoginServer(this->get_login_conn());
+
     if(character_state != RobotAgentEnum::INIT) {
         std::cout << "Player current state is not initialized" << std::endl;
         return -1;
@@ -138,7 +196,7 @@ baselink* RobotAgent::get_gate_conn() {
     return gate_conn;
 }
 
-int32_t RobotAgent::get_character_state()
+int32_t RobotAgent::get_state()
 {
     return character_state;
 }

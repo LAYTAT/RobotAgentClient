@@ -21,10 +21,11 @@ private:
 public:
     bool Init();
     void Uinit();
-    void Dojob();
+
+    [[noreturn]] void Working();
     inline Epoll* get_epoll() {return &m_epoll;}
     inline std::unordered_map<INT32, baselink*>* get_tcp_map() {return tcp_map;}
-    inline std::unordered_map<INT32, RobotAgent*>* get_socketfd_palyer() {return socketfd_player;}
+    inline std::unordered_map<INT32, RobotAgent*>* get_socketfd_player() {return socketfd_player;}
 
     INT32 connectToLoginServer(baselink* which_server_connection);
 //    INT32 connectToGateServer(INT32 client_port);

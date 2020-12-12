@@ -24,13 +24,7 @@ public:
 
     // ≥È¿ÎµΩgame server
     INT32 PlayerRegister(const MesgInfo &stHead, const char *body, const INT32 len,const INT32 connfd);
-    INT32 PlayerMove(const MesgInfo &stHead, const char *body, const INT32 len,const INT32 connfd);
-    INT32 PlayerAddItem(const MesgInfo &stHead, const char *body,const INT32 len,const INT32 connfd);
-    INT32 PlayerRemoveItem(const MesgInfo &stHead, const char *body,const INT32 len,const INT32 connfd);
-    INT32 PlayerLogin(const MesgInfo &stHead, const char *body,const INT32 len,const INT32 connfd);
-    INT32 GetRankList(const MesgInfo &stHead, const char *body,const INT32 len,const INT32 connfd);
-    INT32 PlayerLoginPassed(const MesgInfo &stHead, const char *body,const INT32 len,const INT32 connfd);
-    INT32 PlayerLoginFailed(const MesgInfo &stHead, const char *body,const INT32 len,const INT32 connfd);
+
 private:
     MsgHandler<EventSystem>* m_msgHandler;
 
