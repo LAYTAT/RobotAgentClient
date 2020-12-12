@@ -38,10 +38,8 @@ public:
     inline void SendMsgToGate(RobotAgent* robot_agent, const MesgInfo& msg_info, Message& msg) {
         if(robot_agent->get_gate_conn()->GetFD() > 0) m_epoll.SendMsg(msg_info, msg, robot_agent->get_gate_conn()->GetFD());
     }
-    bool is_gate_set;
-    string gate_ip;
-    INT32 gate_port;
-    INT32 gate_session_code;
+    inline bool IsGateSet(){return is_gate_set;}
+    inline void SetGate(string ip, INT32 port, INT32 session_code){gate_ip=ip;gate_port=port;gate_session_code=session_code;is_gate_set=true;}
 
 private:
 //    INT32 m_login_fd;
@@ -50,6 +48,10 @@ private:
     MesgHead* m_msg_head;
     std::unordered_map<INT32, baselink*>* tcp_map;
     std::unordered_map<INT32, RobotAgent*> * socketfd_player;
+    bool is_gate_set=false;
+    string gate_ip;
+    INT32 gate_port;
+    INT32 gate_session_code;
 //    baselink* m_ListenSock_Login;
 //    baselink* m_ListenSock_Gate;
 //

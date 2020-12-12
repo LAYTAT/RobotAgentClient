@@ -240,6 +240,7 @@ void RobotAgentManager::Dojob()
             perror("epollwait");
             break;
         }
+
         for (int i = 0; i < ready_size; i++)
         {
             struct epoll_event* t_epev = m_epoll.GetEvent(i);

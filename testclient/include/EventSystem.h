@@ -25,6 +25,7 @@ public:
 
     // ≥È¿ÎµΩgame server
     INT32 OnLoginReply(const MesgInfo &stHead, const char *body, const INT32 len,const INT32 connfd);
+    INT64 count = 0;
 
 private:
     MsgHandler<EventSystem>* m_msgHandler;

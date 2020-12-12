@@ -50,8 +50,9 @@ void EventSystem::Uinit()
 /*@目的：处理服务器返回的登录信息验证
  *@返回：出错的话返回-1，正常的话返回0 */
 INT32 EventSystem::OnLoginReply(const MesgInfo &stHead, const char *body, const INT32 len,const INT32 connfd){
-    std::cout << "\n successfully recved login reply";
+    std::cout << "\n successfully recved login reply" << count++ << std::endl;
     GameSpec::LoginRep login_reply_from_server;
+
 
     if(!login_reply_from_server.ParseFromArray(body, len))
     {
@@ -64,7 +65,9 @@ INT32 EventSystem::OnLoginReply(const MesgInfo &stHead, const char *body, const 
     }
     // 验证通过的话：
     // 首先取出返回的信息
-    std::cout << "gate ip:" << login_reply_from_server.gate_ip() << " gate port:" << login_reply_from_server.gate_port() << " session code: " << login_reply_from_server.session_code();
-//    RobotAgentManager::Instance()->gate_ip =
+    if (!RobotAgentManager::Instance()->IsGateSet()) {
+        RobotAgentManager::Instance()->SetGate(login_reply_from_server.gate_ip(),login_reply_from_server.gate_port(),login_reply_from_server.session_code());
+    }
+
 }
 
