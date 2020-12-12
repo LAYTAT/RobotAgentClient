@@ -23,6 +23,7 @@ public:
     void Uinit();
 
     [[noreturn]] void Working();
+    void Dojob();
     inline Epoll* get_epoll() {return &m_epoll;}
     inline std::unordered_map<INT32, baselink*>* get_tcp_map() {return tcp_map;}
     inline std::unordered_map<INT32, RobotAgent*>* get_socketfd_player() {return socketfd_player;}
@@ -37,6 +38,11 @@ public:
     inline void SendMsgToGate(RobotAgent* robot_agent, const MesgInfo& msg_info, Message& msg) {
         if(robot_agent->get_gate_conn()->GetFD() > 0) m_epoll.SendMsg(msg_info, msg, robot_agent->get_gate_conn()->GetFD());
     }
+    bool is_gate_set;
+    string gate_ip;
+    INT32 gate_port;
+    INT32 gate_session_code;
+
 private:
 //    INT32 m_login_fd;
 //    INT32 m_gate_fd;

@@ -8,6 +8,7 @@
 #include "Config.h"
 #include "Singleton.h"
 #include "MsgHandler.h"
+#include "RobotAgentManager.h"
 #include <functional>
 
 class EventSystem
@@ -23,7 +24,7 @@ public:
     MsgHandler<EventSystem>*  GetMsgHandler() { return m_msgHandler; }
 
     // ≥È¿ÎµΩgame server
-    INT32 PlayerRegister(const MesgInfo &stHead, const char *body, const INT32 len,const INT32 connfd);
+    INT32 OnLoginReply(const MesgInfo &stHead, const char *body, const INT32 len,const INT32 connfd);
 
 private:
     MsgHandler<EventSystem>* m_msgHandler;

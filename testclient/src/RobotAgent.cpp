@@ -17,7 +17,7 @@ RobotAgent::RobotAgent() {
 
     this->Init();
 
-    if(login_conn->OpenClient(9001) == -1) {
+    if(login_conn->OpenClient() == -1) {
         std::cout << "open client failed" << std::endl;
     }
 
@@ -40,7 +40,7 @@ bool RobotAgent::Init(){
     }
 }
 
-//int32_t RobotAgent::msg_handler(ProtocalMsg *msg)
+//int32_t RobotAgent::msg_handler(MesgHead *msg)
 //{
 //    if (msg == nullptr)
 //    {
@@ -48,7 +48,7 @@ bool RobotAgent::Init(){
 //        return -1;
 //    }
 //
-//    if (msg->data == nullptr)
+//    if (msg-> == nullptr)
 //    {
 //        std::cout << "msg->data is null!" << std::endl;
 //        return -2;

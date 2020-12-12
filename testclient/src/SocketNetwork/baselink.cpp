@@ -145,7 +145,49 @@ INT32 baselink::set_non_block( INT32 fd ) {
     return 0;
 }
 
-INT32 baselink::OpenClient(INT32 port)
+//INT32 baselink::OpenClient(INT32 port)
+//{
+//    if (m_socketfd > 0)
+//    {
+//        CloseSocket();
+//    }
+//    //| SOCK_NONBLOCK
+//    m_socketfd = socket(AF_INET, SOCK_STREAM , 0);
+//    if (m_socketfd < 0)
+//    {
+//        std::cout << "Open server socket failed!" << std::endl;
+//        m_socketfd = -1;
+//        return -1;
+//    }
+//
+//    std::cout << "Open client success, client sock :" << m_socketfd << std::endl;
+//
+//    int32_t iOptValue = 1;
+//    if (0 != setsockopt(m_socketfd, SOL_SOCKET, SO_REUSEADDR, &iOptValue, sizeof(iOptValue))){
+//        CloseSocket();
+//        return -1;
+//    }
+//    if(0 != setsockopt(m_socketfd, IPPROTO_TCP, TCP_NODELAY, &iOptValue, sizeof(iOptValue))) //set TCP_CORK
+//    {
+//        CloseSocket();
+//        return -1;
+//    }
+//
+//    struct sockaddr_in stSocketAddr;
+//    memset(&stSocketAddr, 0x0, sizeof(stSocketAddr));
+//    stSocketAddr.sin_family = AF_INET;
+//    stSocketAddr.sin_addr.s_addr = htonl(INADDR_ANY);
+//    stSocketAddr.sin_port = (u_short)htons(port);
+//
+//    socklen_t addrSize = socklen_t(sizeof(stSocketAddr));
+//    if (0 != bind(m_socketfd, (const struct sockaddr*) &stSocketAddr, addrSize)){
+//        CloseSocket();
+//        return -1;
+//    }
+//    return 0;
+//}
+
+INT32 baselink::OpenClient()
 {
     if (m_socketfd > 0)
     {
@@ -155,12 +197,12 @@ INT32 baselink::OpenClient(INT32 port)
     m_socketfd = socket(AF_INET, SOCK_STREAM , 0);
     if (m_socketfd < 0)
     {
-        std::cout << "Open server socket failed!" << std::endl;
+        std::cout << "Open client socket failed!" << std::endl;
         m_socketfd = -1;
         return -1;
     }
 
-    std::cout << "Open client success, client sock :" << m_socketfd << std::endl;
+    std::cout << "Open server client success , client sock :" << m_socketfd << std::endl;
 
     int32_t iOptValue = 1;
     if (0 != setsockopt(m_socketfd, SOL_SOCKET, SO_REUSEADDR, &iOptValue, sizeof(iOptValue))){
@@ -172,20 +214,9 @@ INT32 baselink::OpenClient(INT32 port)
         CloseSocket();
         return -1;
     }
-
-    struct sockaddr_in stSocketAddr;
-    memset(&stSocketAddr, 0x0, sizeof(stSocketAddr));
-    stSocketAddr.sin_family = AF_INET;
-    stSocketAddr.sin_addr.s_addr = htonl(INADDR_ANY);
-    stSocketAddr.sin_port = (u_short)htons(port);
-
-    socklen_t addrSize = socklen_t(sizeof(stSocketAddr));
-    if (0 != bind(m_socketfd, (const struct sockaddr*) &stSocketAddr, addrSize)){
-        CloseSocket();
-        return -1;
-    }
     return 0;
 }
+
 
 INT32 baselink::ConnectServer(INT32 port, const char* addr)
 {
@@ -202,7 +233,7 @@ INT32 baselink::ConnectServer(INT32 port, const char* addr)
 	serveraddr.sin_addr.s_addr = inet_addr(addr);
 	if (connect(m_socketfd, (sockaddr*)&serveraddr, sizeof(serveraddr)) < 0)
 	{
-		std::cout << "client connect failed! " << std::endl;
+		std::cout << "client connect failed! m_socketfd:" << m_socketfd << std::endl;
 		perror("perrno:");
 		return -1;
 	}

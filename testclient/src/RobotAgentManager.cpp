@@ -11,6 +11,12 @@
 INSTANCE_SINGLETON(RobotAgentManager);
 
 RobotAgentManager::RobotAgentManager(){
+    //初始化epoll
+    if(!m_epoll.Init())
+    {
+        std::cout << "RobotAgentManager error: Epoll add ev failed!" << std::endl;
+        return;
+    }
     INT32 agents_num = NUMER_OF_ROBOTS;
     if(agents_num <= 0) {
         std::cout << "Constructing RobotAgentManager failed." << std::endl;
@@ -46,6 +52,7 @@ RobotAgentManager::~RobotAgentManager(){
 
 
 bool RobotAgentManager::Init(){
+//    m_epoll.EpollAdd()
 //    if (!m_ListenSock_Login->Init(-1)) {
 //        std::cout << "login sock init failed." << std::endl;
 //        return -1;
@@ -201,4 +208,79 @@ INT32 RobotAgentManager::connectToLoginServer(baselink* which_server_connection)
 //        }
     }
     return;
+}
+
+void RobotAgentManager::Dojob()
+{
+    std::cout << "Robot Agent Manager: Dojob start!" << std::endl;
+    INT32 ready_size = 0;
+    while (true)
+    {
+
+        // 改变robot agent的状态
+        std::unordered_map<INT32, RobotAgent*>* socketfd_player_map = get_socketfd_player();
+        auto fd_player_itr = socketfd_player_map->begin();
+        int len = socketfd_player_map->size();
+        for (int i = 0 ; i < len ; ++i) {
+            //对于初始状态的robot
+            if(fd_player_itr -> second -> get_state() == RobotAgentEnum::INIT){
+                std::string name = std::string("jack"+std::to_string(i+1));
+                std::string pwd = name; // 目前的数据库中id与pwd一致
+                fd_player_itr->second->agent_login(name.c_str(), pwd.c_str());
+            } else if (fd_player_itr -> second ->get_state() == RobotAgentEnum::LOGGED_IN){
+                fd_player_itr -> second ->agent_state_update();
+            }
+            fd_player_itr++;
+        }
+
+        // 网络部分
+        ready_size = m_epoll.EpollWait(-1);
+        if(ready_size < 0){
+            std::cout << "ready_size < 0, errno:"<< errno << std::endl;
+            perror("epollwait");
+            break;
+        }
+        for (int i = 0; i < ready_size; i++)
+        {
+            struct epoll_event* t_epev = m_epoll.GetEvent(i);
+            INT32 rdyfd = t_epev->data.fd;
+
+            baselink* t_linker = m_epoll.GetLinkerByfd(rdyfd);
+            if (t_linker == nullptr)
+                {
+                    std::cout << "Can't find client socket in linkmap, connfd = "<< rdyfd << std::endl;
+                    continue;
+                }
+            INT32 ret = t_linker->RecvData();
+            if (ret == 0)
+                {
+                    continue;
+                }
+            else if (ret == -1)
+                {
+                    m_epoll.EpollRemove(rdyfd);
+                    // 前面已经确认过connfd一定存在
+                    continue;
+                }
+
+            INT32 t_packlen = t_linker->GetPackLens();
+            while ( t_packlen != -1 )
+                {
+                    //获得一整个包，注意这里才改变buffer的头指针
+                    char *str = t_linker->GetPack(t_packlen);
+                    //判断第一个包头的信息
+                    const MesgInfo t_msginfo =t_linker->GetMsginfo();
+
+                    //获得msgID绑定的函数，然后来处理对应的MSG
+                    auto func = EventSystem::Instance()->GetMsgHandler()->GetMsgFunc(t_msginfo.msgID);
+                    if (NULL != func)
+                    {
+                        //调用处理函数
+                        (EventSystem::Instance()->*func)(t_msginfo, str, t_msginfo.packLen, rdyfd);
+                    }
+                    t_packlen = t_linker->GetPackLens();
+                }
+
+        }
+    }
 }

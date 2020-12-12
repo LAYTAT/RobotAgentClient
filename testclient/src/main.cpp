@@ -3,6 +3,13 @@
 #include "SocketServer.h"
 #include "EventSystem.h"
 #include "RobotAgentManager.h"
+#include <signal.h>
+
+// SIGPIPE ignore handler
+void sigpipe_ignore_handler(int ignore){
+    perror("sigpipe ignored ! 忽略了一次SIGPIPE");
+}
+
 // 顺序建立单例类
 void CreatSingletons(){
 //    CREATE_SINGLETON(SocketServer)
@@ -19,20 +26,18 @@ void DestroySingletons(){
 
 int main()
 {
+
+//    signal(SIGPIPE, sigpipe_ignore_handler);
+
     CreatSingletons();
 
     RobotAgent* ra = new RobotAgent();
-//    ra->Init();
+
 
     ra->agent_login("jack89","123456");
-    while(true){
 
-    }
-    // RobotAgentManager::Instance()->Dojob();
-    // 连接到login server
-//    RobotAgentManager::Instance()->connectToLoginServer(9001);
-    // 连接到gate server
-//    RobotAgentManager::Instance()->connectToGateServer(9002);
+    RobotAgentManager::Instance()->Dojob();
+
     DestroySingletons();
     return 1;
 }
