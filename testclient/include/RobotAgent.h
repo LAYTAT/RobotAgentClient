@@ -20,7 +20,7 @@ private:
     INT32 pos_ry;
     baselink* gate_conn;
     baselink* login_conn;
-    RobotAgentEnum character_state;
+    RobotAgentEnum state;
 
 public:
     RobotAgent();
@@ -33,9 +33,9 @@ public:
     baselink* get_login_conn();
     INT32 agent_login(const char* username, const char* password);
     INT32 agent_state_update();
-    INT32 msg_handler(MesgInfo* msg);
+    INT32 msg_handler(const MesgInfo* msg_info, char * str);
     INT32 get_state();
-    INT32 close_conn();
+    INT32 close_login();
 };
 
 

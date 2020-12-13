@@ -133,79 +133,87 @@ INT32 RobotAgentManager::connectToLoginServer(baselink* which_server_connection)
             fd_player_itr++;
         }
 
-//        RobotAgent* temp_player_agent;
-//        for (int i = 0; i < ready_size; i++)
-//        {
-//            struct epoll_event* event = get_epoll()->get_event(i);
-//
-//            if (sockfd_player_map->find(event->data.fd) != sockfd_player_map->end())
-//            {
-//                temp_player_agent = sockfd_player_map->at(event->data.fd);
-//                TCPSocket* soc;
-//                if (temp_player_agent->get_state() == LoginState || temp_player_agent->get_state() == WaitState)
-//                {
-//                    soc = temp_player_agent->get_login_conn();
-//                }
-//                else if (temp_player_agent->get_state() == ActiveState)
-//                {
-//                    soc = temp_player_agent->get_conn();
-//                }
-//                else
-//                {
-//                    std::cout << "state is not correct!" << std::endl;
-//                }
-//
-//                int rec_len;
-//                ProtocalMsg * msg;
-//                int times = 0;
+        RobotAgent* temp_player_agent;
+        for (int i = 0; i < ready_size; i++)
+        {
+            struct epoll_event* event = m_epoll.GetEvent(i);
+
+            if (socketfd_player_map->find(event->data.fd) != socketfd_player_map->end())
+            {
+                temp_player_agent = socketfd_player_map->at(event->data.fd);
+                baselink* soc;
+                if (temp_player_agent->get_state() == RobotAgentEnum::LOGGING_IN || temp_player_agent->get_state() == RobotAgentEnum::INIT)
+                {
+                    soc = temp_player_agent->get_login_conn();
+                }
+                else if (temp_player_agent->get_state() == RobotAgentEnum::LOGGED_IN)
+                {
+                    soc = temp_player_agent->get_gate_conn();
+                }
+                else
+                {
+                    std::cout << "state is not correct!" << std::endl;
+                }
+
+                INT32 rec_len;
+                MesgHead* msghead_ptr;
+                MesgInfo msg_info;
+                int times = 0;
+
+
 //                while (true)
 //                {
-//                    rec_len = soc->recv_data();
-//                    SocketBuffer * buff = soc->get_socketbuff();
-//                    std::cout << "return size:" << rec_len << "  readable len: " << buff->get_readable_size() << " start:"
-//                              << buff->get_start() << " end:" << buff->get_end() << std::endl;
-//
-//                    if (buff->get_readable_size() >= sizeof(int32_t) * 3)
-//                    {
-//                        msg = buff->decode();
-//                        if (buff->get_readable_size() >= (sizeof(int32_t) * 3 + msg->payload_size))
-//                        {
-//                            buff->get_msg_payload(msg);
-//                            buff->set_start_by_len((sizeof(int32_t) * 3 + msg->payload_size));
-//                            temp_player_agent->msg_handler(msg);
-//
-//                            if (temp_player_agent->get_login_conn() == soc)
-//                            {
-//                                int32_t fd = soc->get_socket_fd();
-//                                TCPSocket * temp_con = temp_player_agent->get_conn();
-//                                epoll->epoll_add(temp_con->get_socket_fd());
-//                                sockfd_player_map->insert({ temp_con->get_socket_fd(), temp_player_agent});
-//                                epoll->epoll_del(temp_player_agent->get_login_conn()->get_socket_fd());
-//                                temp_player_agent->close_login();
-//                                sockfd_player_map->erase(fd);
-//                            }
-//
-//
-//                            break;
-//                        }
-//                        if (msg != nullptr)
-//                        {
-//                            delete msg;
-//                            msg = nullptr;
-//                        }
-//                    }
-//                    times++;
-//                    if (times > 100)
-//                    {
-//                        std::cout << "Network is bad!" << std::endl;
-//                        break;
-//                    }
-//
+                    INT32 rdyfd = event->data.fd;
+                    baselink* t_linker = m_epoll.GetLinkerByfd(rdyfd);
+                    if(t_linker == nullptr)
+                    {
+                        std::cout << "Cannot find connection socket in linkmap! connfd = "<< rdyfd << std::endl;
+                        continue;
+                    }
+                    INT32 recv_ret = t_linker->RecvData();
+                    if (recv_ret == 0)
+                    {
+                        continue;
+                    }
+                    else if (recv_ret == -1)
+                    {
+                        m_epoll.EpollRemove(rdyfd);
+                        // 前面已经确认过connfd一定存在
+                        continue;
+                    }
+                    rec_len = t_linker->GetPackLens();
+                    while ( rec_len != -1) {
+                        //获得一整个包，注意这里才改变buffer的头指针
+                        char *str = t_linker->GetPack(rec_len);
+                        //判断第一个包头的信息
+                        const MesgInfo t_msginfo =t_linker->GetMsginfo();
+
+                        temp_player_agent->msg_handler(&t_msginfo, str);
+
+                        if (temp_player_agent->get_login_conn() == soc)
+                        {
+                            int32_t fd = soc->GetFD();
+                            baselink * temp_con = temp_player_agent->get_login_conn();
+                            m_epoll.EpollAdd(temp_con->GetFD());
+                            socketfd_player_map->insert({ temp_con->GetFD(), temp_player_agent});
+                            m_epoll.EpollRemove(temp_player_agent->get_login_conn()->GetFD());
+                            temp_player_agent->close_login();
+                            socketfd_player_map->erase(fd);
+                        }
+                        rec_len = t_linker->GetPackLens();
+                    }
+                    times++;
+                    if (times > 100)
+                    {
+                        std::cout << "Network is bad!" << std::endl;
+                        break;
+                    }
+
 //                }
-//
-//
-//            }
-//        }
+
+
+            }
+        }
     }
     return;
 }

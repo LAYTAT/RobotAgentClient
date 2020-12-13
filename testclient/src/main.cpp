@@ -35,8 +35,8 @@ int main()
 
 
     ra->agent_login("jack89","123456");
-
-    RobotAgentManager::Instance()->Dojob();
+    RobotAgentManager::Instance()->Working();
+//    RobotAgentManager::Instance()->Dojob();
 
     DestroySingletons();
     return 1;

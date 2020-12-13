@@ -22,7 +22,7 @@ RobotAgent::RobotAgent() {
     }
 
     // 初始化玩家状态
-    character_state = RobotAgentEnum::INIT;
+    state = RobotAgentEnum::INIT;
     pos_x = 100 + (rand() % 7);
     pos_y = 0;
     pos_z = 50 + (rand() % 7);
@@ -40,60 +40,66 @@ bool RobotAgent::Init(){
     }
 }
 
-//int32_t RobotAgent::msg_handler(MesgHead *msg)
-//{
-//    if (msg == nullptr)
-//    {
-//        std::cout << "msg is null!" << std::endl;
-//        return -1;
-//    }
-//
-//    if (msg-> == nullptr)
-//    {
-//        std::cout << "msg->data is null!" << std::endl;
-//        return -2;
-//    }
-//    std::cout << "msg_ID=" << msg->msg_id << "uid=" << msg->user_id << " len=" << msg->payload_size << std::endl;
-//
-//    if (msg->msg_id == Login)
-//    {
-//        if (state != LoginState)
-//        {
-//            std::cout << "state is not correct! state=" << state << std::endl;
-//            return -2;
-//        }
-//        GameSpec::CtlMsgLoginRsp *login_rsp = new GameSpec::CtlMsgLoginRsp();
-//        login_rsp->ParseFromArray(msg->data, msg->payload_size);
-//        if (login_rsp->errcode() != (int32_t)Error_Socket_OK)
-//        {
-//            std::cout << "msg:error code=" << login_rsp->errcode() << std::endl;
-//            return login_rsp->errcode();
-//        }
-//
-//        conn = new TCPSocket();
-//        conn->open_as_client(1023);
-//        int32_t re_state = conn->connect_to(login_rsp->ip().c_str(), login_rsp->port(), true, 100);
-//        if (re_state == 0)
-//        {
-//            state = ActiveState;
-//        }
-//
-//        if (state == ActiveState)
-//        {
-//            std::cout << "state is active!" << std::endl;
-////			delete login_conn;
-////			login_conn = nullptr;
-//        }
-//        id = msg->user_id;
-//        return re_state;
-//    }
-//    else
-//    {
-//        // ignore other massage
-//        return 0;
-//    }
-//
-//}
+INT32 RobotAgent::msg_handler(const MesgInfo* msg_info, char * str)
+{
+    if (msg_info == nullptr)
+    {
+        std::cout << "Error: msg head is null!" << std::endl;
+        return -1;
+    }
+
+    if (str == nullptr)
+    {
+        std::cout << "Error: msg data is null!" << std::endl;
+        return -2;
+    }
+    std::cout
+    << " msg_ID="<< msg_info->msgID
+    << " uid=" << msg_info->uID
+    << " len=" << msg_info->packLen << std::endl;
+
+    if (msg_info->msgID == MSGID::MSG_LOGIN_REPLIY_CLIENT)
+    {
+        if (state != RobotAgentEnum::LOGGING_IN)
+        {
+            std::cout << "Error: state is not correct! state=" << state << std::endl;
+            return -2;
+        }
+        GameSpec::LoginRep *login_rsp = new GameSpec::LoginRep;
+        login_rsp->ParseFromArray(str, msg_info->packLen);
+        if (login_rsp->errcode() != GameSpec::ErrorCode::ERROR_NO_ERROR)
+        {
+            std::cout << "errno： msg error code=" << login_rsp->errcode() << std::endl;
+            return login_rsp->errcode();
+        }
+
+        gate_conn = new baselink();
+        // gate open_as_client
+        if(gate_conn->OpenClient() == -1) {
+            std::cout << "open client failed" << std::endl;
+        }
+        int32_t re_state = gate_conn->ConnectServer(login_rsp->gate_port(), login_rsp->gate_ip().c_str());
+        if (re_state == 0)
+        {
+            state = RobotAgentEnum::LOGGED_IN;
+        }
+
+        if (state == RobotAgentEnum::LOGGED_IN)
+        {
+            std::cout << "state is active!" << std::endl;
+//			delete login_conn;
+//			login_conn = nullptr;
+        }
+        player_id = msg_info->uID;
+        return re_state;
+    }
+    else
+    {
+        // ignore other massage
+        return 0;
+    }
+
+}
 
 void RobotAgent::Uninit(){
     login_conn->Uinit();
@@ -112,14 +118,14 @@ RobotAgent::~RobotAgent() {
         delete gate_conn;
         gate_conn = nullptr;
     }
-    character_state = RobotAgentEnum::OTHER_STATE;
+    state = RobotAgentEnum::OTHER_STATE;
 }
 
 //INT32 RobotAgent::
 
 INT32 RobotAgent::agent_state_update(){
-    if(character_state != RobotAgentEnum::LOGGED_IN){
-        std::cout << "\nPlayer state is not right, current state = " << character_state << std::endl;
+    if(state != RobotAgentEnum::LOGGED_IN){
+        std::cout << "\nPlayer state is not right, current state = " << state << std::endl;
     }
 
     MSG_PLAYER_MOVE playerMoveState = MSG_PLAYER_MOVE();
@@ -153,9 +159,9 @@ INT32 RobotAgent::agent_state_update(){
     }
     playerMoveState.set_state(pstate);
     std::cout << "\nplayer current state update : x= " << pos_x
-    << " z= " << pos_z
-    << " ry= " << pos_ry << " state="
-    << " state = " << character_state << std::endl;
+              << " z= " << pos_z
+              << " ry= " << pos_ry << " state="
+              << " state = " << state << std::endl;
     usleep(20000);
     return 0;
 }
@@ -164,7 +170,7 @@ INT32 RobotAgent::agent_login(const char *username, const char *password) {
 
     RobotAgentManager::Instance()->connectToLoginServer(this->get_login_conn());
 
-    if(character_state != RobotAgentEnum::INIT) {
+    if(state != RobotAgentEnum::INIT) {
         std::cout << "Player current state is not initialized" << std::endl;
         return -1;
     }
@@ -183,7 +189,7 @@ INT32 RobotAgent::agent_login(const char *username, const char *password) {
     msginfo_to_login->packLen = login_req.ByteSizeLong();
     RobotAgentManager::Instance()->SendMsgToLogin(this,*msginfo_to_login, login_req);
     delete msginfo_to_login;
-    character_state = RobotAgentEnum::LOGGING_IN;
+    state = RobotAgentEnum::LOGGING_IN;
 
     return 0;
 }
@@ -198,10 +204,10 @@ baselink* RobotAgent::get_gate_conn() {
 
 int32_t RobotAgent::get_state()
 {
-    return character_state;
+    return state;
 }
 
-int32_t RobotAgent::close_conn()
+int32_t RobotAgent::close_login()
 {
     delete login_conn;
     login_conn = nullptr;

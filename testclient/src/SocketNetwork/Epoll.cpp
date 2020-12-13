@@ -77,6 +77,9 @@ struct epoll_event* Epoll::GetEvent(INT32 pos)
 
 baselink* Epoll::GetLinkerByfd(INT32 connfd)
 {
+//    for(auto pair : m_linkmap) {
+//        std::cout << "pair: (" << pair.first << "," << pair.second <<")" << std::endl;
+//    }
     if(m_linkmap.find(connfd) == m_linkmap.end())
     {
         return nullptr;
